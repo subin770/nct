@@ -59,11 +59,11 @@ public class NoticeController {
         
         return StreamSupport.stream(all.spliterator(), false)
                 .filter(n -> {
-                    // 1. 분류 필터 (전체 아닐 때만)
+                    
                     if (type != null && !type.isEmpty() && !n.getType().equals(type)) return false;
-                    // 2. 상태 필터 (전체 아닐 때만)
+                    
                     if (status != null && !status.isEmpty() && !n.getStatus().equals(status)) return false;
-                    // 3. 키워드 필터
+                    
                     if (keyword != null && !keyword.isEmpty()) {
                         String target = "";
                         if ("title".equals(keywordType)) target = n.getTitle();
@@ -71,7 +71,7 @@ public class NoticeController {
                         else if ("content".equals(keywordType)) target = n.getContent();
                         if (target == null || !target.contains(keyword)) return false;
                     }
-                    // 4. 날짜 필터 (yyyy-MM-dd 기준 비교)
+                    
                     if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
                         String targetDate = "noticeDate".equals(dateType) ? n.getNoticeDate() : n.getRegDate();
                         if (targetDate != null) {
