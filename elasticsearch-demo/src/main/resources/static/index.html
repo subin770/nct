@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>보안관제 종합시스템 - 목록</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: #f5f7f9;
+            margin: 0;
+            padding: 0;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .header {
+            background-color: #2c4a91;
+            color: white;
+            padding: 0 20px; 
+            display: flex;
+            align-items: center;
+            height: 50px;
+            box-sizing: border-box;
+        }
+
+        .header span {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .page-title {
+            font-weight: bold;
+            font-size: 14px; 
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding-left: 0;
+        }
+
+        .search-area {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .btn-reg-top {
+            position: absolute;
+            right: 0;
+            top: -40px;
+            background: white;
+            border: 1px solid #2c4a91;
+            color: #2c4a91;
+            padding: 5px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .search-box {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 4px;
+            display: flex;
+        }
+
+        .search-fields {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .search-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-row-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .label {
+            width: 60px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input,
+        select {
+            border: 1px solid #ccc;
+            padding: 5px 8px;
+            border-radius: 2px;
+        }
+
+        .input-keyword {
+            width: 355px;
+        }
+
+        .btn-search {
+            background: #2c4a91;
+            color: white;
+            border: none;
+            width: 100px;
+            height: 32px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-top: 2px solid #2c4a91;
+        }
+
+        th {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 12px 10px;
+            font-weight: bold;
+        }
+
+        td {
+            border: 1px solid #eee;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .title-link {
+            text-align: left;
+            padding-left: 15px;
+            color: #2c4a91;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .pagination-container {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            border: 1px solid #ddd;
+            background: white;
+            padding: 4px 10px;
+            cursor: pointer;
+            border-radius: 2px;
+            min-width: 30px;
+            color: #333;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-btn.active {
+            background: #2c4a91;
+            color: white;
+            border-color: #2c4a91;
+        }
+
+        .page-btn:disabled {
+            background: #f9f9f9;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .page-btn i {
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header"><span>보안관제 종합시스템</span></div>
+    <div class="container">
+        <div class="page-title">권고문 관리</div>
+        <div class="search-area">
+            <button class="btn-reg-top" onclick="location.href='form.html?mode=create'">+ 등록</button>
+            <div class="search-box">
+                <div class="search-fields">
+                    <div class="search-row search-row-between">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="label">날짜조회</span>
+                            <select id="dateType">
+                                <option value="regDate">등록일</option>
+                                <option value="noticeDate">통보일</option>
+                            </select>
+                            <input type="date" id="startDate"> ~
+                            <input type="date" id="endDate">
+                        </div>
+                        <button class="btn-search" onclick="loadNoticeList(1)">검색</button>
+                    </div>
+                    <div class="search-row">
+                        <span class="label">분류</span>
+                        <select id="searchType" style="width:150px;">
+                            <option value="">전체</option>
+                            <option value="일반">일반</option>
+                            <option value="필수">필수</option>
+                        </select>
+                        <span class="label" style="margin-left:20px;">처리상태</span>
+                        <select id="searchStatus" style="width: 189px;">
+                            <option value="">전체</option>
+                            <option value="등록">등록</option>
+                            <option value="통보 대기">통보 대기</option>
+                            <option value="통보 완료">통보 완료</option>
+                        </select>
+                    </div>
+                    <div class="search-row">
+                        <span class="label">키워드</span>
+                        <select id="keywordType">
+                            <option value="title">제목</option>
+                            <option value="summary">개요</option>
+                            <option value="content">내용</option>
+                        </select>
+                        <input type="text" id="keyword" class="input-keyword" placeholder="내용을 입력해 주세요."
+                            onkeyup="if(window.event.keyCode==13){loadNoticeList(1)}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="60">번호</th>
+                    <th width="80">분류</th>
+                    <th>제목</th>
+                    <th width="100">처리 상태</th>
+                    <th width="100">작성자</th>
+                    <th width="80">첨부파일</th>
+                    <th width="120">등록일</th>
+                    <th width="120">통보일</th>
+                </tr>
+            </thead>
+            <tbody id="list-body"></tbody>
+        </table>
+        <div class="pagination-container">
+            <div id="page-info" style="font-size:12px; color:#888;"></div>
+            <div class="pagination" id="pagination-list"></div> 
+        </div>
+    </div>
+
+    <script>
+        let allNotices = []; 
+        const PAGE_SIZE = 10;
+
+        window.onload = function () {
+            const today = new Date().toISOString().substring(0, 10);
+            document.getElementById('startDate').value = today;
+            document.getElementById('endDate').value = today;
+            loadNoticeList(1);
+        };
+
+        async function loadNoticeList(page = 1) {
+            const dateType = document.getElementById('dateType').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const type = document.getElementById('searchType').value;
+            const status = document.getElementById('searchStatus').value;
+            const keywordType = document.getElementById('keywordType').value;
+            const keyword = document.getElementById('keyword').value;
+
+            const query = `?dateType=${dateType}&startDate=${startDate}&endDate=${endDate}&type=${type}&status=${status}&keywordType=${keywordType}&keyword=${keyword}`;
+
+            try {
+                /* [서버 연결 코드 유지] 이 코드가 있어야 데이터가 정상적으로 나옵니다 */
+                const response = await fetch('/api/notice/all' + query);
+                allNotices = await response.json();
+                renderTable(page);
+            } catch (error) {
+                console.error("데이터 로딩 실패:", error);
+            }
+        }
+
+        function renderTable(page) {
+            const listBody = document.getElementById('list-body');
+            listBody.innerHTML = '';
+
+            if (!allNotices || allNotices.length === 0) {
+                listBody.innerHTML = '<tr><td colspan="8">조회된 데이터가 없습니다.</td></tr>';
+                updatePagination(0, 1);
+                return;
+            }
+
+            const startIndex = (page - 1) * PAGE_SIZE;
+            const endIndex = startIndex + PAGE_SIZE;
+            const pagedData = allNotices.slice(startIndex, endIndex);
+
+            pagedData.forEach((notice, index) => {
+                const regDateOnly = notice.regDate ? notice.regDate.substring(0, 10) : '-';
+                const noticeDateOnly = notice.noticeDate ? notice.noticeDate.substring(0, 10) : '-';
+                const fileIcon = (notice.fileName && notice.fileName !== "") ? '<i class="bi bi-file-earmark-text"></i>' : '';
+                const displayNum = allNotices.length - (startIndex + index);
+
+                const row = `
+                    <tr>
+                        <td>${displayNum}</td>
+                        <td>${notice.type || '일반'}</td>
+                        <td class="title-link">
+                            <a href="form.html?id=${notice.id}" style="color:inherit; text-decoration:none;">
+                                ${notice.title}
+                            </a>
+                        </td>
+                        <td style="color:blue; font-weight:bold;">${notice.status || '통보 완료'}</td>
+                        <td>${notice.author || '조수빈'}</td>
+                        <td>${fileIcon}</td>
+                        <td>${regDateOnly}</td>
+                        <td>${noticeDateOnly}</td>
+                    </tr>
+                `;
+                listBody.innerHTML += row;
+            });
+
+            updatePagination(allNotices.length, page);
+        }
+
+        function updatePagination(totalCount, currentPage) {
+            const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+            const paginationList = document.getElementById('pagination-list');
+            const pageInfo = document.getElementById('page-info');
+            
+            const startEntry = totalCount === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+            const endEntry = Math.min(currentPage * PAGE_SIZE, totalCount);
+            
+            pageInfo.innerText = `Showing ${startEntry} to ${endEntry} of ${totalCount} entries`;
+            paginationList.innerHTML = '';
+
+            function createBtn(iconClass, targetPage, disabled) {
+                const btn = document.createElement('button');
+                btn.className = 'page-btn';
+                btn.innerHTML = `<i class="${iconClass}"></i>`;
+                if (disabled) {
+                    btn.disabled = true;
+                } else {
+                    btn.onclick = () => renderTable(targetPage);
+                }
+                return btn;
+            }
+
+            paginationList.appendChild(createBtn('bi bi-chevron-left', currentPage - 1, currentPage === 1));
+
+            for (let i = 1; i <= Math.max(1, totalPages); i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                btn.innerText = i;
+                btn.onclick = () => renderTable(i);
+                paginationList.appendChild(btn);
+            }
+
+            paginationList.appendChild(createBtn('bi bi-chevron-right', currentPage + 1, currentPage === totalPages || totalPages === 0));
+        }
+    </script>
+</body>
+
+</html>
