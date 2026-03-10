@@ -103,7 +103,7 @@
         }
 
         .input-keyword {
-            width: 355px;
+            width: 516px;
         }
 
         .btn-search {
@@ -215,13 +215,13 @@
                     </div>
                     <div class="search-row">
                         <span class="label">분류</span>
-                        <select id="searchType" style="width:150px;">
+                        <select id="searchType" style="width: 250px;">
                             <option value="">전체</option>
                             <option value="일반">일반</option>
                             <option value="필수">필수</option>
                         </select>
                         <span class="label" style="margin-left:20px;">처리상태</span>
-                        <select id="searchStatus" style="width: 189px;">
+                        <select id="searchStatus" style="width: 250px;">
                             <option value="">전체</option>
                             <option value="등록">등록</option>
                             <option value="통보 대기">통보 대기</option>
@@ -284,7 +284,7 @@
 
             const query = `?dateType=${dateType}&startDate=${startDate}&endDate=${endDate}&type=${type}&status=${status}&keywordType=${keywordType}&keyword=${keyword}`;
 
-            try {
+            try {   
                 const response = await fetch('/api/notice/all' + query);
                 allNotices = await response.json();
                 renderTable(page);

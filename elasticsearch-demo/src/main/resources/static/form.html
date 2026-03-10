@@ -45,8 +45,8 @@
 
         .form-table th {
             background: #f8f9fa;
-            width: 140px; /* 너비를 살짝 줄임 */
-            padding: 10px 15px; /* 패딩 조절 */
+            width: 140px; 
+            padding: 10px 15px; 
             border: 1px solid #ddd;
             text-align: right;
             font-weight: bold;
@@ -169,7 +169,7 @@
             </tr>
             <tr>
                 <th class="required">개요</th>
-                <td colspan="3"><textarea id="summary" style="height:60px;"></textarea></td>
+                <td colspan="3"><input type="text" textarea id="summary" placeholder="개요를 입력해 주세요."></textarea></td>
             </tr>
             <tr>
                 <th class="required">내용</th>
@@ -179,7 +179,7 @@
             </tr>
             <tr>
                 <th class="required">대책</th>
-                <td colspan="3"><textarea id="action" style="height:60px;"></textarea></td>
+                <td colspan="3"><input type="text" textarea id="action" placeholder="대책을 입력해 주세요."></textarea></td>
             </tr>
             <tr>
                 <th>관련사이트</th>
@@ -306,7 +306,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(noticeData)
             });
-            if (res.ok) { alert("처리되었습니다."); location.href = 'index.html'; }
+            if (res.ok) { alert("등록되었습니다."); location.href = 'index.html'; }
         }
 
         async function deleteNotice() {
