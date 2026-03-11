@@ -33,10 +33,10 @@ public class Notice {
     @Field(type = FieldType.Keyword)
     private String author = "조수빈";
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String regDate;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String noticeDate;
 
     @Field(type = FieldType.Keyword)
